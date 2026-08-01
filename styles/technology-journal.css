@@ -1,0 +1,250 @@
+.technology-journal {
+  position: relative;
+  padding-bottom: var(--ds-space-32);
+}
+
+.technology-journal__masthead {
+  display: grid;
+  gap: var(--ds-space-10);
+  width: min(100% - (var(--ds-page-gutter) * 2), var(--ds-container-wide));
+  min-height: min(42rem, 82svh);
+  margin-inline: auto;
+  padding-block: var(--ds-space-32) var(--ds-space-16);
+  border-bottom: 1px solid var(--ds-color-line-strong);
+  color: var(--ds-color-muted);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-caption);
+  line-height: var(--ds-leading-caption);
+  text-transform: uppercase;
+}
+
+.technology-journal__masthead > p:last-child {
+  justify-self: end;
+  text-align: right;
+}
+
+.technology-journal__eyebrow,
+.technology-journal__name,
+.technology-journal__description,
+.technology-journal__category,
+.technology-journal__page,
+.technology-journal__metadata,
+.technology-journal__code {
+  margin: 0;
+}
+
+.technology-journal__masthead h2 {
+  margin: var(--ds-space-4) 0 0;
+  color: var(--ds-color-ink);
+  font-family: var(--ds-font-display);
+  font-size: clamp(4.25rem, 14vw, 12rem);
+  font-weight: 400;
+  line-height: 0.84;
+  text-transform: none;
+}
+
+.technology-journal__spreads {
+  width: min(100% - (var(--ds-page-gutter) * 2), var(--ds-container-wide));
+  margin-inline: auto;
+}
+
+.technology-journal__spread {
+  position: relative;
+  display: grid;
+  align-items: center;
+  gap: var(--ds-space-10);
+  min-height: max(42rem, 94svh);
+  overflow: hidden;
+  padding-block: var(--ds-space-16);
+  border-bottom: 1px solid var(--ds-color-line-strong);
+  isolation: isolate;
+}
+
+.technology-journal__spread::before {
+  position: absolute;
+  z-index: -1;
+  inset: var(--ds-space-8) 0;
+  border: 1px solid var(--ds-color-line);
+  content: "";
+  pointer-events: none;
+}
+
+.technology-journal__page,
+.technology-journal__category,
+.technology-journal__metadata dt,
+.technology-journal__code {
+  color: var(--ds-color-muted);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-caption);
+  line-height: var(--ds-leading-caption);
+  text-transform: uppercase;
+}
+
+.technology-journal__page {
+  position: absolute;
+  top: calc(var(--ds-space-8) + var(--ds-space-3));
+  left: var(--ds-space-3);
+  color: var(--ds-color-accent-strong);
+}
+
+.technology-journal__code {
+  position: absolute;
+  right: -1rem;
+  bottom: 14%;
+  z-index: -1;
+  color: var(--ds-color-ink);
+  font-size: clamp(1.5rem, 6vw, 5.5rem);
+  line-height: 1;
+  opacity: 0.05;
+  text-transform: none;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.technology-journal__logo {
+  display: grid;
+  width: min(75vw, 26rem);
+  aspect-ratio: 1;
+  place-items: center;
+  margin-inline: auto;
+  border: 1px solid var(--ds-color-ink);
+  border-radius: 50%;
+  color: var(--ds-color-ink);
+  font-family: var(--ds-font-display);
+  font-size: clamp(6rem, 27vw, 18rem);
+  font-weight: 400;
+  line-height: 1;
+  cursor: default;
+  transition: border-color var(--ds-duration-base) var(--ds-ease-editorial), background-color var(--ds-duration-base) var(--ds-ease-editorial), box-shadow var(--ds-duration-base) var(--ds-ease-editorial);
+  will-change: opacity;
+}
+
+.technology-journal__logo:hover {
+  border-color: var(--ds-color-accent-strong);
+  background: oklch(0.72 0.13 250 / 8%);
+  box-shadow: 0 1rem 2.5rem oklch(0.53 0.17 250 / 16%);
+}
+
+.technology-journal__logo span {
+  display: block;
+  max-width: 90%;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: clip;
+}
+
+.technology-journal__logo--compact {
+  font-size: clamp(5rem, 19vw, 12rem);
+}
+
+.technology-journal__copy {
+  display: grid;
+  gap: var(--ds-space-5);
+  padding-inline: var(--ds-space-4);
+  will-change: opacity, transform;
+}
+
+.technology-journal__name {
+  font-family: var(--ds-font-display);
+  font-size: clamp(3.75rem, 14vw, 9rem);
+  font-weight: 400;
+  line-height: var(--ds-leading-display);
+}
+
+.technology-journal__name .word,
+.technology-journal__name .char {
+  display: inline-block;
+}
+
+.technology-journal__name .word {
+  white-space: nowrap;
+}
+
+.technology-journal__description {
+  max-width: 34rem;
+  font-size: var(--ds-text-body-lg);
+  line-height: 1.62;
+}
+
+.technology-journal__metadata {
+  display: grid;
+  gap: var(--ds-space-3);
+  margin-top: var(--ds-space-3);
+  padding-top: var(--ds-space-5);
+  border-top: 1px solid var(--ds-color-line);
+}
+
+.technology-journal__metadata div {
+  display: grid;
+  grid-template-columns: minmax(6rem, 0.7fr) minmax(0, 1.3fr);
+  gap: var(--ds-space-3);
+}
+
+.technology-journal__metadata dd {
+  margin: 0;
+  font-size: var(--ds-text-body-sm);
+  line-height: var(--ds-leading-body);
+}
+
+@media (min-width: 64rem) {
+  .technology-journal__masthead {
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: start;
+    min-height: 88svh;
+  }
+
+  .technology-journal__masthead > div {
+    align-self: center;
+  }
+
+  .technology-journal__spread {
+    grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.78fr);
+    gap: clamp(4rem, 9vw, 11rem);
+    min-height: 100svh;
+    padding-inline: clamp(3rem, 7vw, 10rem);
+  }
+
+  .technology-journal__spread:nth-child(even) .technology-journal__logo {
+    grid-column: 2;
+  }
+
+  .technology-journal__spread:nth-child(even) .technology-journal__copy {
+    grid-row: 1;
+    grid-column: 1;
+  }
+
+  .technology-journal__logo {
+    width: min(27vw, 27rem);
+  }
+
+  .technology-journal__copy {
+    padding: 0;
+  }
+
+  .technology-journal__name {
+    font-size: clamp(3.75rem, 9vw, 7.5rem);
+  }
+
+  .technology-journal__spread:nth-child(even) .technology-journal__copy {
+    text-align: right;
+  }
+
+  .technology-journal__spread:nth-child(even) .technology-journal__metadata div {
+    grid-template-columns: minmax(0, 1.3fr) minmax(6rem, 0.7fr);
+  }
+
+  .technology-journal__spread:nth-child(even) .technology-journal__metadata dt {
+    grid-column: 2;
+  }
+
+  .technology-journal__spread:nth-child(even) .technology-journal__metadata dd {
+    grid-row: 1;
+    grid-column: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .technology-journal__code {
+    transform: none !important;
+  }
+}

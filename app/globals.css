@@ -1,1 +1,66 @@
 @import "tailwindcss";
+@import "../styles/background.css";
+@import "../styles/navigation.css";
+@import "../styles/scroll-system.css";
+@import "../styles/tokens.css";
+@import "../styles/primitives.css";
+
+@layer base {
+	*,
+	::before,
+	::after {
+		box-sizing: border-box;
+	}
+
+	html {
+		overflow-x: clip;
+		background: var(--ds-color-canvas);
+		color: var(--ds-color-ink);
+		text-rendering: optimizeLegibility;
+	}
+
+	body {
+		min-height: 100vh;
+		overflow-x: clip;
+		background: transparent;
+		font-family: var(--ds-font-sans);
+		font-size: var(--ds-text-body);
+		font-weight: 400;
+		line-height: var(--ds-leading-body);
+		letter-spacing: var(--ds-tracking);
+	}
+
+	.app-shell {
+		position: relative;
+		z-index: 1;
+	}
+
+	button,
+	input,
+	textarea,
+	select {
+		font: inherit;
+	}
+
+	button:not(:disabled),
+	a {
+		cursor: pointer;
+	}
+
+	:focus-visible {
+		outline: var(--focus-ring-width) solid var(--ds-color-focus);
+		outline-offset: var(--focus-ring-offset);
+		box-shadow: var(--ds-shadow-focus);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		*,
+		::before,
+		::after {
+			animation-duration: 0.01ms !important;
+			animation-iteration-count: 1 !important;
+			scroll-behavior: auto !important;
+			transition-duration: 0.01ms !important;
+		}
+	}
+}

@@ -1,0 +1,121 @@
+@theme inline {
+  --color-canvas: var(--ds-color-canvas);
+  --color-surface: var(--ds-color-surface);
+  --color-ink: var(--ds-color-ink);
+  --color-muted: var(--ds-color-muted);
+  --color-subtle: var(--ds-color-subtle);
+  --color-accent: var(--ds-color-accent);
+  --color-line: var(--ds-color-line);
+  --font-sans: var(--ds-font-sans);
+  --font-display: var(--ds-font-display);
+  --radius-none: var(--ds-radius-none);
+  --radius-xs: var(--ds-radius-xs);
+  --radius-sm: var(--ds-radius-sm);
+  --radius-md: var(--ds-radius-md);
+  --shadow-float: var(--ds-shadow-float);
+  --shadow-lift: var(--ds-shadow-lift);
+  --ease-editorial: var(--ds-ease-editorial);
+  --ease-enter: var(--ds-ease-enter);
+}
+
+:root {
+  /* Color palette: quiet neutrals with one precise interactive accent. */
+  --ds-color-canvas: oklch(0.985 0.003 90);
+  --ds-color-surface: oklch(1 0 0);
+  --ds-color-ink: oklch(0.16 0.008 80);
+  --ds-color-muted: oklch(0.46 0.01 80);
+  --ds-color-subtle: oklch(0.68 0.008 80);
+  --ds-color-accent: oklch(0.53 0.17 250);
+  --ds-color-accent-strong: oklch(0.44 0.17 250);
+  --ds-color-accent-contrast: oklch(0.99 0.002 90);
+  --ds-color-line: oklch(0.16 0.008 80 / 12%);
+  --ds-color-line-strong: oklch(0.16 0.008 80 / 22%);
+  --ds-color-glass: oklch(1 0 0 / 68%);
+  --ds-color-glass-strong: oklch(1 0 0 / 82%);
+  --ds-color-focus: oklch(0.53 0.17 250);
+
+  /* Typography: editorial display face paired with a neutral UI sans. */
+  --ds-font-display: "Iowan Old Style", "Baskerville", Georgia, serif;
+  --ds-font-sans: "Suisse Intl", "Neue Haas Grotesk Text Pro", "Helvetica Neue", sans-serif;
+  --ds-font-mono: "SFMono-Regular", Consolas, monospace;
+  --ds-text-display-xl: 5.5rem;
+  --ds-text-display-lg: 4rem;
+  --ds-text-display-md: 3rem;
+  --ds-text-heading-lg: 2.25rem;
+  --ds-text-heading-md: 1.5rem;
+  --ds-text-heading-sm: 1.125rem;
+  --ds-text-body-lg: 1.125rem;
+  --ds-text-body: 1rem;
+  --ds-text-body-sm: 0.875rem;
+  --ds-text-caption: 0.75rem;
+  --ds-leading-display: 0.98;
+  --ds-leading-heading: 1.1;
+  --ds-leading-body: 1.5;
+  --ds-leading-caption: 1.35;
+  --ds-tracking: 0;
+
+  /* Spacing follows a compact 4px rhythm with deliberate editorial leaps. */
+  --ds-space-0: 0;
+  --ds-space-1: 0.25rem;
+  --ds-space-2: 0.5rem;
+  --ds-space-3: 0.75rem;
+  --ds-space-4: 1rem;
+  --ds-space-5: 1.25rem;
+  --ds-space-6: 1.5rem;
+  --ds-space-8: 2rem;
+  --ds-space-10: 2.5rem;
+  --ds-space-12: 3rem;
+  --ds-space-16: 4rem;
+  --ds-space-20: 5rem;
+  --ds-space-24: 6rem;
+  --ds-space-32: 8rem;
+  --ds-space-40: 10rem;
+
+  /* Responsive grid and container rules. */
+  --ds-grid-columns: 4;
+  --ds-grid-gutter: var(--ds-space-4);
+  --ds-page-gutter: var(--ds-space-4);
+  --ds-container-reading: 44rem;
+  --ds-container-content: 72rem;
+  --ds-container-wide: 90rem;
+
+  /* Corners are intentionally restrained to preserve an editorial edge. */
+  --ds-radius-none: 0;
+  --ds-radius-xs: 0.125rem;
+  --ds-radius-sm: 0.25rem;
+  --ds-radius-md: 0.5rem;
+  --ds-radius-pill: 999px;
+
+  --ds-shadow-float: 0 1rem 3rem oklch(0.16 0.008 80 / 8%);
+  --ds-shadow-lift: 0 1.5rem 4rem oklch(0.16 0.008 80 / 12%);
+  --ds-shadow-focus: 0 0 0 0.1875rem oklch(0.53 0.17 250 / 24%);
+
+  /* Motion durations and curves shared by CSS, GSAP, and Motion. */
+  --ds-duration-instant: 100ms;
+  --ds-duration-fast: 180ms;
+  --ds-duration-base: 280ms;
+  --ds-duration-slow: 480ms;
+  --ds-duration-deliberate: 720ms;
+  --ds-ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+  --ds-ease-enter: cubic-bezier(0.22, 1, 0.36, 1);
+  --ds-ease-exit: cubic-bezier(0.7, 0, 0.84, 0);
+
+  --focus-ring-width: 0.125rem;
+  --focus-ring-offset: 0.1875rem;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --ds-grid-columns: 8;
+    --ds-grid-gutter: var(--ds-space-6);
+    --ds-page-gutter: var(--ds-space-8);
+  }
+}
+
+@media (min-width: 75rem) {
+  :root {
+    --ds-grid-columns: 12;
+    --ds-grid-gutter: var(--ds-space-8);
+    --ds-page-gutter: var(--ds-space-12);
+  }
+}
