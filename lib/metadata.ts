@@ -19,12 +19,12 @@ export const defaultMetadata: Metadata = {
     description: siteConfig.description,
     locale: siteConfig.locale,
     siteName: siteConfig.name,
-    title: `${siteConfig.name} | Frontend Developer`,
+    title: `${siteConfig.name} | Full Stack Developer`,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     description: siteConfig.description,
-    title: `${siteConfig.name} | Frontend Developer`,
+    title: `${siteConfig.name} | Full Stack Developer`,
   },
 };

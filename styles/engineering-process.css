@@ -289,11 +289,11 @@
   .engineering-process__header { grid-template-columns: 1fr 2fr 1fr; align-items: end; }
   .engineering-process__method { align-self: end; }
   .engineering-process__index { justify-content: flex-end; }
-  .engineering-process__timeline { overflow-x: auto; padding-bottom: var(--ds-space-3); scrollbar-color: var(--ds-color-line-strong) transparent; scrollbar-width: thin; }
+  .engineering-process__timeline { overflow-x: auto; padding-bottom: var(--ds-space-3); scroll-behavior: smooth; scroll-snap-type: x mandatory; scrollbar-color: var(--ds-color-line-strong) transparent; scrollbar-width: thin; }
   .engineering-process__line { top: 1.25rem; right: 3rem; bottom: auto; left: 3rem; width: auto; height: 1px; }
   .engineering-process__line-fill { width: 100%; height: 100%; transform: scaleX(0); transform-origin: left center; }
   .engineering-process__stages { display: grid; grid-auto-columns: minmax(18rem, 1fr); grid-auto-flow: column; gap: var(--ds-space-6); min-width: 126rem; padding: var(--ds-space-8) var(--ds-space-3) var(--ds-space-3); }
-  .process-stage { min-height: 31rem; padding: var(--ds-space-6); }
+  .process-stage { min-height: 31rem; padding: var(--ds-space-6); scroll-snap-align: start; }
   .process-stage__node { top: calc(var(--ds-space-8) * -1 - 0.42rem); left: 50%; transform: translateX(-50%); }
   .process-stage:hover .process-stage__node, .process-stage:focus .process-stage__node, .process-stage[aria-current="step"] .process-stage__node { transform: translateX(-50%) scale(1.2); }
   .process-stage__visual { min-height: 11rem; }

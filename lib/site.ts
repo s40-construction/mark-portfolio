@@ -1,5 +1,5 @@
 export const siteConfig = {
   name: "Mark Keneth Bonquin",
-  description: "Frontend developer and Information Systems graduate building clear, thoughtful web interfaces with React, Next.js, and purposeful motion.",
+  description: "Full Stack Developer and Information Systems graduate building modern, scalable, and user-focused web applications from frontend to backend.",
   locale: "en_US",
 } as const;

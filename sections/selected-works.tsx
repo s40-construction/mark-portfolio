@@ -11,18 +11,18 @@ import "@/styles/selected-works.css";
 const projects = [
   {
     challenge: "Present specialist temporary works and scaffolding services with the confidence and precision expected by commercial construction clients.",
-    detail: "An editorial system combines generous space, structural grids, and purposeful motion so technical expertise feels direct rather than dense.",
-    name: "S40 Construction", number: "01", role: "Frontend Developer", stack: "Next.js / React / GSAP / Framer Motion / Firebase", story: "Construction Company Website", visual: "construction",
+    detail: "I delivered responsive frontend development alongside Firebase-backed content integration, deployment setup, and performance-focused motion. The result combines a clear client experience with a maintainable web foundation.",
+    name: "S40 Construction", number: "01", role: "Full Stack Developer", stack: "Next.js / React / GSAP / Framer Motion / Firebase", story: "Full-stack construction platform", visual: "construction",
   },
   {
     challenge: "Reduce manual encoding in a hospital transaction flow while keeping each handoff traceable for staff and administrators.",
-    detail: "The system maps voice input to a structured transaction flow, with PHP and MySQL connecting the prototype, data model, and daily operational needs.",
+    detail: "I designed the responsive interface, PHP backend flow, MySQL database structure, and API-ready transaction pipeline. The prototype accounts for secure data handling, validation, authentication-ready access, and reliable record creation.",
     name: "Hospital Voice Transaction System", number: "02", role: "System Analyst / Full Stack Developer", stack: "PHP / MySQL / JavaScript", story: "Voice-enabled workflow", visual: "hospital",
   },
   {
     challenge: "Create a portfolio that makes the thinking behind the work as visible as the finished interface.",
-    detail: "This site is an evolving case study in editorial systems, type, motion, and responsive engineering. It exists to make a professional practice tangible.",
-    name: "Portfolio Website", number: "03", role: "Designer / Developer", stack: "Next.js / GSAP / Three.js / TypeScript", story: "An interface for the practice", visual: "portfolio",
+    detail: "This production Next.js application combines responsive UI development, API-ready architecture, metadata, deployment automation, performance optimization, and downloadable resume delivery in one complete product experience.",
+    name: "Portfolio Website", number: "03", role: "Full Stack Developer", stack: "Next.js / TypeScript / GSAP / Three.js / Vercel", story: "A full-stack portfolio platform", visual: "portfolio",
   },
 ] as const;
 
@@ -90,7 +90,7 @@ export function SelectedWorks() {
 
   return (
     <section aria-labelledby="selected-works-title" className="selected-works" data-editorial-section="projects" id="projects" ref={sectionRef}>
-      <header className="selected-works__header" data-editorial-scene>
+      <header className="selected-works__header">
         <p>Issue 06 / Case studies</p>
         <div>
           <p className="selected-works__eyebrow">A record of applied thinking</p>

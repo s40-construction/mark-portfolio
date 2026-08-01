@@ -191,10 +191,10 @@ export function HomeHero() {
             </h1>
             <div className="home-hero__details" ref={detailsRef}>
               <div className="home-hero__roles">
-                <p>Frontend Developer</p>
+                <p>Full Stack Developer</p>
                 <p>Information Systems Graduate</p>
               </div>
-              <p className="home-hero__note">Building clear, thoughtful interfaces for the web.</p>
+              <p className="home-hero__note">Building modern, scalable, and user-focused web applications from frontend to backend.</p>
             </div>
             <div className="home-hero__title" ref={titleRef}>
               <span>Section / Opening Note</span>

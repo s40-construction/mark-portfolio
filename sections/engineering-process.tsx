@@ -2,7 +2,7 @@
 
 import { Code2, Compass, Rocket, ScanLine, Search, SquareDashed } from "lucide-react";
 import SplitType from "split-type";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { gsap } from "@/animations/gsap";
 import { useReducedMotion } from "@/animations/motion";
@@ -19,8 +19,51 @@ const stages = [
 
 export function EngineeringProcess() {
   const sectionRef = useRef<HTMLElement>(null);
+  const timelineRef = useRef<HTMLDivElement>(null);
   const [activeStage, setActiveStage] = useState(0);
+  const [carouselPaused, setCarouselPaused] = useState(false);
+  const [carouselVisible, setCarouselVisible] = useState(false);
   const reduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setCarouselVisible(entry.isIntersecting),
+      { threshold: 0.35 },
+    );
+    observer.observe(section);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (reduceMotion || carouselPaused || !carouselVisible) {
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      setActiveStage((currentStage) => (currentStage + 1) % stages.length);
+    }, 5000);
+
+    return () => window.clearInterval(interval);
+  }, [carouselPaused, carouselVisible, reduceMotion]);
+
+  useEffect(() => {
+    const timeline = timelineRef.current;
+    const activeCard = timeline?.querySelector<HTMLElement>(`[data-stage-index="${activeStage}"]`);
+    if (!timeline || !activeCard || timeline.scrollWidth <= timeline.clientWidth) {
+      return;
+    }
+
+    timeline.scrollTo({
+      behavior: reduceMotion ? "auto" : "smooth",
+      left: activeCard.offsetLeft - timeline.offsetLeft,
+    });
+  }, [activeStage, reduceMotion]);
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
@@ -98,14 +141,14 @@ export function EngineeringProcess() {
           <i aria-hidden="true">●</i>
         </div>
 
-        <div className="engineering-process__timeline">
+        <div className="engineering-process__timeline" onBlurCapture={() => setCarouselPaused(false)} onFocusCapture={() => setCarouselPaused(true)} ref={timelineRef}>
           <div aria-hidden="true" className="engineering-process__line"><span className="engineering-process__line-fill" /></div>
           <div className="engineering-process__stages">
             {stages.map((stage, index) => {
               const Icon = stage.icon;
               const isActive = index === activeStage;
               return (
-                <article aria-current={isActive ? "step" : undefined} className={`process-stage process-stage--${stage.pattern}`} key={stage.number} onFocus={() => setActiveStage(index)} onPointerEnter={() => setActiveStage(index)} tabIndex={0}>
+                <article aria-current={isActive ? "step" : undefined} className={`process-stage process-stage--${stage.pattern}`} data-stage-index={index} key={stage.number} onFocus={() => setActiveStage(index)} onPointerEnter={() => setActiveStage(index)} tabIndex={0}>
                   <div className="process-stage__node"><i /></div>
                   <p className="process-stage__number">{stage.number}</p>
                   <div className="process-stage__visual" aria-hidden="true"><span /><span /><span /><Icon className="process-stage__icon" size={30} strokeWidth={1.25} /></div>

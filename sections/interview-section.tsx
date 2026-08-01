@@ -9,7 +9,7 @@ import "@/styles/interview.css";
 
 const interviewEntries = [
   {
-    answer: "I am an Information Systems graduate and an emerging frontend developer based in Cainta, Rizal. My work is shaped by customer-facing roles, website support, and a steady interest in making digital information feel clear and useful.",
+    answer: "I am a Full Stack Developer with a Bachelor's degree in Information Systems. I build responsive, scalable, and user-focused web applications using modern frontend and backend technologies. I enjoy transforming ideas into complete digital solutions—from intuitive user interfaces to secure backend systems, APIs, and databases.",
     question: "Who is Mark Keneth Bonquin?",
   },
   {
@@ -17,8 +17,8 @@ const interviewEntries = [
     question: "Why Information Systems?",
   },
   {
-    answer: "During my internship at Ollopa Corporation, I saw how accurate, well-organized website content supports a business. Frontend development is where structure, communication, and visual clarity meet in something people can use every day.",
-    question: "Why Frontend Development?",
+    answer: "During my internship at Ollopa Corporation, I saw how well-organized digital systems support a business. Full stack development is where responsive interfaces, secure application logic, APIs, and reliable data work together to solve real needs.",
+    question: "Why Full Stack Development?",
   },
   {
     answer: "I am inspired by products that respect attention. The best interfaces make complex tasks feel calm, direct, and considered, while still giving people the information they need at the right moment.",
@@ -29,11 +29,11 @@ const interviewEntries = [
     question: "How do you approach problem solving?",
   },
   {
-    answer: "I enjoy working with HTML, CSS, JavaScript, PHP, MySQL, GSAP, Firebase, API integrations, and GitHub. I also use Figma to think through the interface before the code begins.",
+    answer: "I work across frontend technologies such as React, Next.js, TypeScript, Tailwind CSS, GSAP, and Three.js, alongside backend tools including PHP, Node.js, Express.js, REST APIs, Firebase, and MySQL. Git, GitHub, VS Code, Postman, Power BI, and Figma support the delivery workflow.",
     question: "What technologies do you enjoy?",
   },
   {
-    answer: "I am looking for a junior frontend or digital product opportunity where I can contribute with curiosity, dependable communication, and a strong willingness to learn from an experienced team.",
+    answer: "I am looking for a junior full stack or digital product opportunity where I can contribute with curiosity, dependable communication, and a strong willingness to learn from an experienced team.",
     question: "What kind of opportunities are you looking for?",
   },
 ] as const;
@@ -41,7 +41,7 @@ const interviewEntries = [
 const timeline = [
   ["2020 - 2023", "Customer support and agent training"],
   ["2025", "Virtual assistant, exam readiness and compliance"],
-  ["2026", "IT internship: website and digital platform support"],
+  ["2026", "Full Stack Developer / IT internship: website and digital platform support"],
 ] as const;
 
 export function InterviewSection() {

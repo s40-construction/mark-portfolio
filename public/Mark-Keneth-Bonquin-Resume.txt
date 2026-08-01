@@ -1,15 +1,17 @@
 MARK KENETH BONQUIN
-Frontend Developer | Information Systems Graduate
+Full Stack Developer | Information Systems Graduate
 Cainta, Rizal, Philippines
 
 PROFILE
-Emerging frontend developer with experience in website and digital-platform support, customer-facing operations, and Information Systems coursework. Focused on building clear, thoughtful web interfaces.
+Full Stack Developer with a Bachelor's degree in Information Systems. Builds responsive, scalable, and user-focused web applications using modern frontend and backend technologies, from intuitive interfaces to secure backend systems, APIs, and databases.
 
-TECHNOLOGIES
-HTML, CSS, JavaScript, TypeScript, React, Next.js, PHP, MySQL, Firebase, Git, GitHub, GSAP, API integrations, Figma, Power BI.
+SKILLS
+Frontend: HTML5, CSS3, JavaScript, TypeScript, React, Next.js, GSAP, Three.js, Tailwind CSS.
+Backend: PHP, Node.js, Express.js, REST API, Firebase, MySQL.
+Tools: Git, GitHub, VS Code, Postman, Power BI, Figma.
 
 EXPERIENCE
-2026 - IT Internship, Ollopa Corporation: Website and digital platform support.
+2026 - Full Stack Developer / IT Internship, Ollopa Corporation: Website and digital platform support.
 2025 - Virtual Assistant: Exam readiness and compliance support.
 2020 - 2023 - Customer Support and Agent Training.
 
