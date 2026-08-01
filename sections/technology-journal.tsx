@@ -75,7 +75,7 @@ export function TechnologyJournal() {
 
   return (
     <section aria-labelledby="technology-journal-title" className="technology-journal" data-editorial-section="skills" id="skills" ref={sectionRef}>
-      <header className="technology-journal__masthead" data-editorial-scene>
+      <header className="technology-journal__masthead">
         <p>Technology Journal / 03</p>
         <div>
           <p className="technology-journal__eyebrow">A field guide to the tools behind the work</p>

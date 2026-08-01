@@ -123,7 +123,7 @@ export function InterviewSection() {
 
   return (
     <section aria-labelledby="interview-title" className="interview-section" data-editorial-section="about" id="about" ref={sectionRef}>
-      <div className="interview-section__scene" data-editorial-scene>
+      <div className="interview-section__scene">
         <header className="interview-section__header">
           <div className="interview-section__metadata">
             <p>Feature article / 02</p>

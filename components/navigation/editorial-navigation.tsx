@@ -44,15 +44,27 @@ export function EditorialNavigation() {
           duration: reduceMotion ? 0 : 0.45,
           ease: "power3.out",
           paddingInline: isScrolled ? "0.9rem" : "0rem",
+          y: isScrolled && window.matchMedia("(min-width: 64rem)").matches ? "-3rem" : 0,
         });
         gsap.to(logo, { duration: reduceMotion ? 0 : 0.45, ease: "power3.out", scale: isScrolled ? 0.88 : 1 });
       };
 
-      ScrollTrigger.create({
-        onEnter: () => applyScrolledState(true),
-        onLeaveBack: () => applyScrolledState(false),
-        start: "top -32",
+      let isScrolled = false;
+      const updateScrolledState = (scrollPosition: number) => {
+        const nextScrolledState = scrollPosition > 32;
+        if (nextScrolledState !== isScrolled) {
+          isScrolled = nextScrolledState;
+          applyScrolledState(isScrolled);
+        }
+      };
+
+      const scrollTrigger = ScrollTrigger.create({
+        end: "max",
+        onRefresh: (self) => updateScrolledState(self.scroll()),
+        onUpdate: (self) => updateScrolledState(self.scroll()),
+        start: 0,
       });
+      updateScrolledState(scrollTrigger.scroll());
 
       navigation.querySelectorAll<HTMLElement>(".editorial-nav__link").forEach((link) => {
         const indicator = link.querySelector(".editorial-nav__indicator");
