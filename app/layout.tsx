@@ -18,8 +18,8 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <PortfolioBackground />
-        <EditorialNavigation />
         <SmoothScrollProvider>
+          <EditorialNavigation />
           <EditorialScrollSystem />
           <div className="app-shell">{children}</div>
           <GlobalCinematicExperience />

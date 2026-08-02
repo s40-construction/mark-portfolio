@@ -36,6 +36,7 @@ export function EditorialNavigation() {
       }
 
       const applyScrolledState = (isScrolled: boolean) => {
+        navigation.classList.toggle("is-scrolled", isScrolled);
         gsap.to(shell, {
           backdropFilter: isScrolled ? "blur(1.25rem) saturate(150%)" : "blur(0rem) saturate(100%)",
           backgroundColor: isScrolled ? "oklch(1 0 0 / 72%)" : "oklch(1 0 0 / 0%)",
@@ -44,7 +45,6 @@ export function EditorialNavigation() {
           duration: reduceMotion ? 0 : 0.45,
           ease: "power3.out",
           paddingInline: isScrolled ? "0.9rem" : "0rem",
-          y: isScrolled && window.matchMedia("(min-width: 64rem)").matches ? "-3rem" : 0,
         });
         gsap.to(logo, { duration: reduceMotion ? 0 : 0.45, ease: "power3.out", scale: isScrolled ? 0.88 : 1 });
       };
@@ -65,6 +65,11 @@ export function EditorialNavigation() {
         start: 0,
       });
       updateScrolledState(scrollTrigger.scroll());
+      const onScroll = () => updateScrolledState(window.scrollY);
+      window.addEventListener("scroll", onScroll, { passive: true });
+      cleanupListeners.push(() => {
+        window.removeEventListener("scroll", onScroll);
+      });
 
       navigation.querySelectorAll<HTMLElement>(".editorial-nav__link").forEach((link) => {
         const indicator = link.querySelector(".editorial-nav__indicator");
@@ -96,6 +101,42 @@ export function EditorialNavigation() {
       context.revert();
     };
   }, [reduceMotion]);
+
+  useEffect(() => {
+    let touchStartY = 0;
+    const setNavigationRetracted = (isRetracted: boolean) => {
+      document.documentElement.classList.toggle("is-scrolling-down", isRetracted);
+    };
+    const onWheel = (event: WheelEvent) => {
+      if (Math.abs(event.deltaY) < 4) {
+        return;
+      }
+      setNavigationRetracted(event.deltaY > 0);
+    };
+    const onTouchStart = (event: TouchEvent) => {
+      touchStartY = event.touches[0]?.clientY ?? 0;
+    };
+    const onTouchMove = (event: TouchEvent) => {
+      const currentTouchY = event.touches[0]?.clientY ?? touchStartY;
+      const touchDelta = touchStartY - currentTouchY;
+      if (Math.abs(touchDelta) < 4) {
+        return;
+      }
+      setNavigationRetracted(touchDelta > 0);
+      touchStartY = currentTouchY;
+    };
+
+    window.addEventListener("wheel", onWheel, { passive: true });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      setNavigationRetracted(false);
+    };
+  }, []);
 
   useEffect(() => {
     const menu = menuRef.current;
