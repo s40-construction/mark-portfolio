@@ -20,12 +20,6 @@ const commands = [
   ["R", "Download resume", "/Mark-Keneth-Bonquin-Resume.pdf"],
 ] as const;
 
-type AudioEngine = {
-  context: AudioContext;
-  ambience: OscillatorNode;
-  gain: GainNode;
-};
-
 export function GlobalCinematicExperience() {
   const [loadingStep, setLoadingStep] = useState(0);
   const [loadingVisible, setLoadingVisible] = useState(true);
@@ -36,7 +30,7 @@ export function GlobalCinematicExperience() {
   const [currentSection, setCurrentSection] = useState("Home");
   const [fps, setFps] = useState(60);
   const [quickActionsVisible, setQuickActionsVisible] = useState(false);
-  const audioRef = useRef<AudioEngine | null>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
@@ -120,10 +114,7 @@ export function GlobalCinematicExperience() {
     return () => window.removeEventListener("scroll", updateQuickActions);
   }, []);
 
-  useEffect(() => () => {
-    audioRef.current?.ambience.stop();
-    void audioRef.current?.context.close();
-  }, []);
+  useEffect(() => () => audioRef.current?.pause(), []);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -178,42 +169,19 @@ export function GlobalCinematicExperience() {
   }, []);
 
   const toggleSound = () => {
+    const ambience = audioRef.current;
+    if (!ambience) {
+      return;
+    }
+
     if (soundEnabled) {
-      audioRef.current?.ambience.stop();
-      audioRef.current?.context.close();
-      audioRef.current = null;
+      ambience.pause();
+      ambience.currentTime = 0;
       setSoundEnabled(false);
       return;
     }
-    const AudioContextConstructor = window.AudioContext;
-    if (!AudioContextConstructor) {
-      return;
-    }
-    const context = new AudioContextConstructor();
-    const gain = context.createGain();
-    const ambience = context.createOscillator();
-    ambience.type = "sine";
-    ambience.frequency.value = 86;
-    gain.gain.value = 0.008;
-    ambience.connect(gain).connect(context.destination);
-    ambience.start();
-    audioRef.current = { ambience, context, gain };
-    setSoundEnabled(true);
-  };
-
-  const playInteractionTick = () => {
-    const engine = audioRef.current;
-    if (!engine) {
-      return;
-    }
-    const tick = engine.context.createOscillator();
-    const gain = engine.context.createGain();
-    tick.frequency.value = 620;
-    gain.gain.setValueAtTime(0.008, engine.context.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.0001, engine.context.currentTime + 0.045);
-    tick.connect(gain).connect(engine.context.destination);
-    tick.start();
-    tick.stop(engine.context.currentTime + 0.05);
+    ambience.volume = 0.95;
+    void ambience.play().then(() => setSoundEnabled(true)).catch(() => setSoundEnabled(false));
   };
 
   return (
@@ -222,18 +190,19 @@ export function GlobalCinematicExperience() {
         <div><span>Portfolio / 2026</span><strong>{loadingSteps[loadingStep]}</strong><i><b style={{ transform: `scaleX(${(loadingStep + 1) / loadingSteps.length})` }} /></i></div>
       </div>
       <div aria-hidden="true" className="experience-mouse-light" />
+      <audio loop preload="auto" ref={audioRef} src="/portfolio-ambient-loop.wav" />
       <aside aria-live="polite" className="experience-floating-label"><span>{labels[quoteIndex * 2 % labels.length]}</span><i>/{currentSection}</i></aside>
       <aside aria-live="polite" className="experience-quote"><q>{quotes[quoteIndex]}</q></aside>
-      <button aria-pressed={soundEnabled} aria-label={soundEnabled ? "Disable ambient sound" : "Enable ambient sound"} className={`experience-sound${soundEnabled ? "" : " is-muted"}`} onClick={toggleSound} onPointerDown={playInteractionTick} type="button"><Speaker aria-hidden="true" size={15} /></button>
-      <button aria-label="Open command palette" className="experience-command" onClick={() => setPaletteOpen(true)} onPointerDown={playInteractionTick} type="button"><Command aria-hidden="true" size={14} /><span>Command</span><kbd>Ctrl K</kbd></button>
+      <button aria-pressed={soundEnabled} aria-label={soundEnabled ? "Disable ambient sound" : "Enable ambient sound"} className={`experience-sound${soundEnabled ? "" : " is-muted"}`} onClick={toggleSound} type="button"><Speaker aria-hidden="true" size={15} /></button>
+      <button aria-label="Open command palette" className="experience-command" onClick={() => setPaletteOpen(true)} type="button"><Command aria-hidden="true" size={14} /><span>Command</span><kbd>Ctrl K</kbd></button>
       <nav aria-label="Recruiter quick actions" className={`experience-quick-actions${quickActionsVisible ? " is-visible" : ""}`}>
-        <a aria-label="Download Mark Keneth Bonquin resume" download href="/Mark-Keneth-Bonquin-Resume.pdf" onPointerDown={playInteractionTick}><Download aria-hidden="true" size={15} /><span>Resume</span></a>
-        <a aria-label="Open GitHub" href="https://github.com" onPointerDown={playInteractionTick} rel="noreferrer" target="_blank"><GitBranch aria-hidden="true" size={15} /><span>GitHub</span></a>
-        <a aria-label="Search Mark Keneth Bonquin on LinkedIn" href="https://www.linkedin.com/search/results/people/?keywords=Mark%20Keneth%20Bonquin" onPointerDown={playInteractionTick} rel="noreferrer" target="_blank"><ExternalLink aria-hidden="true" size={15} /><span>LinkedIn</span></a>
-        <a aria-label="Email Mark Keneth Bonquin" href="mailto:bonquin.109397@gmail.com" onPointerDown={playInteractionTick}><Mail aria-hidden="true" size={15} /><span>Email</span></a>
-        <a aria-label="Back to top" href="#home" onPointerDown={playInteractionTick}><ArrowUp aria-hidden="true" size={15} /><span>Top</span></a>
+        <a aria-label="Download Mark Keneth Bonquin resume" download href="/Mark-Keneth-Bonquin-Resume.pdf"><Download aria-hidden="true" size={15} /><span>Resume</span></a>
+        <a aria-label="Open GitHub" href="https://github.com" rel="noreferrer" target="_blank"><GitBranch aria-hidden="true" size={15} /><span>GitHub</span></a>
+        <a aria-label="Search Mark Keneth Bonquin on LinkedIn" href="https://www.linkedin.com/search/results/people/?keywords=Mark%20Keneth%20Bonquin" rel="noreferrer" target="_blank"><ExternalLink aria-hidden="true" size={15} /><span>LinkedIn</span></a>
+        <a aria-label="Email Mark Keneth Bonquin" href="mailto:bonquin.109397@gmail.com"><Mail aria-hidden="true" size={15} /><span>Email</span></a>
+        <a aria-label="Back to top" href="#home"><ArrowUp aria-hidden="true" size={15} /><span>Top</span></a>
       </nav>
-      {paletteOpen ? <div className="experience-palette-backdrop" onPointerDown={() => setPaletteOpen(false)}><section aria-label="Command palette" aria-modal="true" className="experience-palette" onPointerDown={(event) => event.stopPropagation()} role="dialog"><header><span>Navigate portfolio</span><button aria-label="Close command palette" onClick={() => setPaletteOpen(false)} type="button"><X aria-hidden="true" size={16} /></button></header><div>{commands.map(([key, label, target]) => <button key={key} onClick={() => { executeCommand(target); setPaletteOpen(false); playInteractionTick(); }} type="button"><span>{label}</span><kbd>{key}</kbd></button>)}</div></section></div> : null}
+      {paletteOpen ? <div className="experience-palette-backdrop" onPointerDown={() => setPaletteOpen(false)}><section aria-label="Command palette" aria-modal="true" className="experience-palette" onPointerDown={(event) => event.stopPropagation()} role="dialog"><header><span>Navigate portfolio</span><button aria-label="Close command palette" onClick={() => setPaletteOpen(false)} type="button"><X aria-hidden="true" size={16} /></button></header><div>{commands.map(([key, label, target]) => <button key={key} onClick={() => { executeCommand(target); setPaletteOpen(false); }} type="button"><span>{label}</span><kbd>{key}</kbd></button>)}</div></section></div> : null}
       {showDiagnostics ? <aside className="experience-diagnostics"><span>Diagnostics / Shift D</span><strong>{fps} FPS</strong><p>Section / {currentSection}</p><p>Theme / Editorial light</p><p>Screen / {typeof window === "undefined" ? "" : `${innerWidth} × ${innerHeight}`}</p><p>Device / {typeof window === "undefined" ? "" : (innerWidth < 768 ? "Mobile" : "Desktop")}</p></aside> : null}
       <section aria-labelledby="contact-title" className="cinematic-exit" data-editorial-section="contact" id="contact"><div className="cinematic-exit__content"><p>Final note / 2026</p><h2 id="contact-title">Thank you.</h2><strong>Let&apos;s build<br />something meaningful.</strong><span>Mark Keneth Bonquin<br />Full Stack Developer</span><div aria-label="Contact actions" className="cinematic-exit__actions"><a className="cinematic-exit__action cinematic-exit__action--primary" href="mailto:bonquin.109397@gmail.com"><Mail aria-hidden="true" size={16} />Let&apos;s Work Together</a><a className="cinematic-exit__action" download href="/Mark-Keneth-Bonquin-Resume.pdf"><Download aria-hidden="true" size={16} />Download Resume</a></div></div></section>
     </>
