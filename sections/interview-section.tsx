@@ -41,6 +41,7 @@ const interviewEntries = [
 const timeline = [
   ["2020 - 2023", "Customer support and agent training"],
   ["2025", "Virtual assistant, exam readiness and compliance"],
+  ["Oct 2025 - Dec 2025", "Faculty Locator and Scheduling capstone project"],
   ["2026", "Full Stack Developer / IT internship: website and digital platform support"],
 ] as const;
 

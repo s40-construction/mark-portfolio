@@ -24,6 +24,11 @@ const projects = [
     detail: "This production Next.js application combines responsive UI development, API-ready architecture, metadata, deployment automation, performance optimization, and downloadable resume delivery in one complete product experience.",
     name: "Portfolio Website", number: "03", role: "Full Stack Developer", stack: "Next.js / TypeScript / GSAP / Three.js / Vercel", story: "A full-stack portfolio platform", visual: "portfolio",
   },
+  {
+    challenge: "Present services, projects, certifications, gallery content, and contact information in one polished online presence that improves user experience.",
+    detail: "I developed a responsive, modern web interface using HTML, CSS, and JavaScript, with PHP supporting the backend workflow. I implemented interactive layouts, clear components, smooth animations, and responsive behavior across desktop and mobile devices, then optimized the website structure, navigation, and loading speed for a seamless browsing experience.",
+    name: "Faculty Locator and Scheduling", number: "04", role: "Frontend Developer", stack: "HTML / CSS / JavaScript / PHP", story: "Capstone project / Oct - Dec 2025", visual: "faculty",
+  },
 ] as const;
 
 export function SelectedWorks() {
@@ -97,7 +102,7 @@ export function SelectedWorks() {
           <h2 className="selected-works__title" id="selected-works-title">Selected<br />Works</h2>
           <p className="selected-works__subtitle">Projects built to solve real problems.</p>
         </div>
-        <p>Three case studies<br />2023 - 2026</p>
+        <p>Four case studies<br />2023 - 2026</p>
       </header>
 
       <div className="selected-works__projects">
@@ -109,6 +114,7 @@ export function SelectedWorks() {
               {project.visual === "construction" ? <ConstructionVisual /> : null}
               {project.visual === "hospital" ? <HospitalVisual /> : null}
               {project.visual === "portfolio" ? <PortfolioVisual /> : null}
+              {project.visual === "faculty" ? <FacultyVisual /> : null}
             </div>
             <div className="case-study__content">
               <p className="case-study__chapter">Case study / {project.number}</p>
@@ -152,6 +158,15 @@ function PortfolioVisual() {
     <div aria-label="Portfolio browser, phone, and code preview" className="case-visual case-visual--portfolio" role="img">
       <div className="case-browser"><div className="case-browser__bar"><i /><i /><i /><span>mark-portfolio</span></div><div className="case-browser__portfolio"><p>Portfolio / 2026</p><strong>Mark<br />Keneth</strong><span>Digital craft, considered</span><i /></div></div>
       <div className="case-code"><LayoutTemplate size={18} strokeWidth={1.25} /><span>const work = clarity;</span><i>GSAP / TypeScript</i></div>
+    </div>
+  );
+}
+
+function FacultyVisual() {
+  return (
+    <div aria-label="Faculty locator and scheduling interface preview" className="case-visual case-visual--faculty" role="img">
+      <div className="case-browser"><div className="case-browser__bar"><i /><i /><i /><span>faculty-locator.local</span></div><div className="case-browser__faculty"><p>Faculty Locator</p><strong>Find the right<br />faculty member.</strong><div><span>Search directory</span><span>View schedule</span><span>Send request</span></div></div></div>
+      <div className="case-schedule"><span>Schedule / Today</span><b>Available</b><i>09:00 - 16:00</i></div>
     </div>
   );
 }
