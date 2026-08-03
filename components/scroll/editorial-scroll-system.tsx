@@ -22,6 +22,7 @@ export function EditorialScrollSystem() {
       return;
     }
 
+    const simplifyEffects = reduceMotion || window.matchMedia("(pointer: coarse)").matches;
     const sections = Array.from(document.querySelectorAll<HTMLElement>("[data-editorial-section]"));
     const splits: SplitType[] = [];
     const context = gsap.context(() => {
@@ -49,7 +50,7 @@ export function EditorialScrollSystem() {
         }
 
         const scene = section.querySelector<HTMLElement>("[data-editorial-scene]");
-        if (scene && !reduceMotion) {
+        if (scene && !simplifyEffects) {
           gsap.fromTo(scene, { autoAlpha: 0.35, scale: 0.985 }, {
             autoAlpha: 1,
             ease: "none",
@@ -59,7 +60,7 @@ export function EditorialScrollSystem() {
         }
 
         const title = section.querySelector<HTMLElement>("[data-editorial-title]");
-        if (title && !reduceMotion) {
+        if (title && !simplifyEffects) {
           const split = new SplitType(title, { types: "chars" });
           const characters = split.chars ?? [];
           splits.push(split);
@@ -75,7 +76,7 @@ export function EditorialScrollSystem() {
         }
 
         section.querySelectorAll<HTMLElement>("[data-editorial-parallax]").forEach((element) => {
-          if (!reduceMotion) {
+          if (!simplifyEffects) {
             gsap.to(element, {
               ease: "none",
               yPercent: -8,

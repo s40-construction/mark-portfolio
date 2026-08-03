@@ -14,9 +14,9 @@ export function SmoothScrollProvider({ children }: PropsWithChildren) {
     }
     window.scrollTo({ behavior: "auto", top: 0 });
 
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const simplifiedScrolling = window.matchMedia("(pointer: coarse), (prefers-reduced-motion: reduce)");
 
-    if (reducedMotion.matches) {
+    if (simplifiedScrolling.matches) {
       return () => {
         window.history.scrollRestoration = previousScrollRestoration;
       };

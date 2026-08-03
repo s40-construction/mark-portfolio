@@ -43,7 +43,7 @@ export function PortfolioBackground() {
   useEffect(() => {
     const background = backgroundRef.current;
 
-    if (!background || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (!background || window.matchMedia("(pointer: coarse), (prefers-reduced-motion: reduce)").matches) {
       return;
     }
 
@@ -75,7 +75,7 @@ export function PortfolioBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
 
-    if (!canvas) {
+    if (!canvas || window.matchMedia("(pointer: coarse), (prefers-reduced-motion: reduce)").matches) {
       return;
     }
 
