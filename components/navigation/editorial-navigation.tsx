@@ -226,11 +226,28 @@ export function EditorialNavigation() {
     });
   }, [activeItem, reduceMotion]);
 
-  const getHref = (item: (typeof navigationItems)[number]) => (item === "Home" ? "/" : `#${item.toLowerCase()}`);
+  const getHref = (item: (typeof navigationItems)[number]) => {
+    if (item === "Home") {
+      return "/";
+    }
+
+    return item === "Experience" ? "#process" : `#${item.toLowerCase()}`;
+  };
 
   const selectItem = (item: (typeof navigationItems)[number]) => {
+    const href = getHref(item);
     setActiveItem(item);
     setIsMenuOpen(false);
+    document.documentElement.classList.remove("is-scrolling-down");
+
+    if (item === "Home") {
+      window.history.pushState(null, "", window.location.pathname);
+      window.scrollTo({ behavior: reduceMotion ? "auto" : "smooth", top: 0 });
+      return;
+    }
+
+    window.history.pushState(null, "", href);
+    document.querySelector(href)?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
   };
 
   return (
@@ -244,7 +261,10 @@ export function EditorialNavigation() {
               className="editorial-nav__link"
               href={getHref(item)}
               key={item}
-              onClick={() => setActiveItem(item)}
+              onClick={(event) => {
+                event.preventDefault();
+                selectItem(item);
+              }}
             >
               {item}
               <span aria-hidden="true" className="editorial-nav__indicator" />
@@ -275,7 +295,10 @@ export function EditorialNavigation() {
                 className="editorial-menu__link"
                 href={getHref(item)}
                 key={item}
-                onClick={() => selectItem(item)}
+                onClick={(event) => {
+                  event.preventDefault();
+                  selectItem(item);
+                }}
                 ref={(element) => {
                   if (element) {
                     menuLinksRef.current[index] = element;
