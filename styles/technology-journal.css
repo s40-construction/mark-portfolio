@@ -186,6 +186,75 @@
   line-height: var(--ds-leading-body);
 }
 
+@media (max-width: 63.999rem) {
+  .technology-journal__masthead {
+    min-height: 32rem;
+    padding-block: var(--ds-space-20) var(--ds-space-12);
+  }
+
+  .technology-journal__masthead h2 {
+    font-size: clamp(3.6rem, 15vw, 6.5rem);
+  }
+
+  .technology-journal__spread {
+    grid-template-columns: minmax(7rem, 0.55fr) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--ds-space-5);
+    min-height: 34rem;
+    padding: var(--ds-space-14) var(--ds-space-4) var(--ds-space-10);
+  }
+
+  .technology-journal__spread::before {
+    inset: var(--ds-space-5) 0;
+  }
+
+  .technology-journal__page {
+    top: calc(var(--ds-space-5) + var(--ds-space-2));
+  }
+
+  .technology-journal__logo {
+    width: min(28vw, 11rem);
+    font-size: clamp(4rem, 15vw, 7rem);
+  }
+
+  .technology-journal__logo--compact {
+    font-size: clamp(3rem, 11vw, 5rem);
+  }
+
+  .technology-journal__copy {
+    gap: var(--ds-space-4);
+    padding: 0;
+  }
+
+  .technology-journal__name {
+    font-size: clamp(2.6rem, 10vw, 4rem);
+  }
+
+  .technology-journal__description {
+    font-size: var(--ds-text-body);
+    line-height: 1.5;
+  }
+
+  .technology-journal__metadata {
+    gap: var(--ds-space-2);
+    margin-top: 0;
+    padding-top: var(--ds-space-4);
+  }
+
+  .technology-journal__metadata div {
+    grid-template-columns: minmax(4.8rem, 0.75fr) minmax(0, 1.25fr);
+    gap: var(--ds-space-2);
+  }
+
+  .technology-journal__metadata dd {
+    font-size: var(--ds-text-caption);
+  }
+
+  .technology-journal__code {
+    display: none;
+  }
+}
+
 @media (min-width: 64rem) {
   .technology-journal__masthead {
     grid-template-columns: 1fr 2fr 1fr;

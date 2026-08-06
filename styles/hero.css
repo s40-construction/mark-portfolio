@@ -381,8 +381,24 @@
 }
 
 @media (max-width: 47.999rem) {
+  .home-hero__frame {
+    min-height: 47rem;
+  }
+
+  .home-hero__body {
+    padding-block: var(--ds-space-10);
+  }
+
   .home-hero__name {
-    font-size: 3.8rem;
+    font-size: clamp(3.25rem, 13vw, 5.25rem);
+  }
+
+  .home-hero__name-line--offset {
+    padding-left: clamp(1.5rem, 8vw, 3.25rem);
+  }
+
+  .home-hero__details {
+    margin-top: var(--ds-space-7);
   }
 
   .home-hero__scroll-indicator {
