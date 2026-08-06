@@ -203,6 +203,55 @@
   font-style: normal;
 }
 
+@media (max-width: 47.999rem) {
+  .interview-section {
+    padding-block: var(--ds-space-18) var(--ds-space-24);
+  }
+
+  .interview-section__header {
+    gap: var(--ds-space-8);
+    padding-bottom: var(--ds-space-10);
+  }
+
+  .interview-section__content {
+    gap: var(--ds-space-8);
+    padding-top: var(--ds-space-10);
+  }
+
+  .interview-entry {
+    gap: var(--ds-space-4);
+    padding-block: var(--ds-space-7);
+  }
+
+  .interview-entry__question-wrap {
+    gap: var(--ds-space-2);
+  }
+
+  .interview-entry__question {
+    font-size: clamp(1.8rem, 7.4vw, 2.35rem);
+    line-height: 0.98;
+  }
+
+  .interview-entry__answer {
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .interview-section__timeline {
+    margin-top: var(--ds-space-6);
+    padding-block: var(--ds-space-5);
+  }
+
+  .interview-section__quote {
+    margin-top: var(--ds-space-16);
+    padding-top: var(--ds-space-8);
+  }
+
+  .interview-section__quote p {
+    font-size: clamp(2rem, 8vw, 3rem);
+  }
+}
+
 @media (min-width: 64rem) {
   .interview-section {
     padding-block: var(--ds-space-40);
