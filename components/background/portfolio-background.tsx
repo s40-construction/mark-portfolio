@@ -2,30 +2,12 @@
 
 import { useEffect, useRef } from "react";
 
-import { gsap } from "@/animations/gsap";
-
-const languageMarks = [
-  "</HTML>",
-  "CSS.grid",
-  "const ui",
-  "PHP::render",
-  "SELECT *",
-  "firebase.app",
-  "git push",
-  "API.fetch",
-  "gsap.to()",
-] as const;
-
 type Point = {
   depth: number;
   driftX: number;
   driftY: number;
   x: number;
   y: number;
-};
-
-type LanguageMark = Point & {
-  label: (typeof languageMarks)[number];
 };
 
 const createPoint = (): Point => ({
@@ -39,38 +21,6 @@ const createPoint = (): Point => ({
 export function PortfolioBackground() {
   const backgroundRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const background = backgroundRef.current;
-
-    if (!background || window.matchMedia("(pointer: coarse), (prefers-reduced-motion: reduce)").matches) {
-      return;
-    }
-
-    const context = gsap.context(() => {
-      gsap.to(".portfolio-background__gradient", {
-        duration: 22,
-        ease: "sine.inOut",
-        repeat: -1,
-        scale: 1.12,
-        transformOrigin: "center",
-        xPercent: 3,
-        yPercent: -2,
-        yoyo: true,
-      });
-
-      gsap.to(".portfolio-background__grid", {
-        duration: 28,
-        ease: "sine.inOut",
-        repeat: -1,
-        xPercent: -1.5,
-        yPercent: 1,
-        yoyo: true,
-      });
-    }, background);
-
-    return () => context.revert();
-  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -94,7 +44,26 @@ export function PortfolioBackground() {
     let height = 0;
     let pixelRatio = 1;
     let nodes: Point[] = [];
-    let marks: LanguageMark[] = [];
+    let cssUpdateFrameId = 0;
+    let pendingPointerX = pointer.x;
+    let pendingPointerY = pointer.y;
+    let pendingScroll = false;
+    let isScrolling = false;
+    let scrollResumeTimer = 0;
+
+    const flushCssUpdates = () => {
+      cssUpdateFrameId = 0;
+      document.documentElement.style.setProperty("--background-light-x", `${pendingPointerX}px`);
+      document.documentElement.style.setProperty("--background-light-y", `${pendingPointerY}px`);
+
+      if (pendingScroll) {
+        pendingScroll = false;
+        document.documentElement.style.setProperty(
+          "--background-scroll-offset",
+          `${Math.min(window.scrollY * -0.025, 72)}px`,
+        );
+      }
+    };
 
     const resize = () => {
       width = window.innerWidth;
@@ -106,23 +75,32 @@ export function PortfolioBackground() {
       canvas.style.height = `${height}px`;
       context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
 
-      const nodeCount = Math.min(54, Math.max(22, Math.round((width * height) / 30000)));
+      const nodeCount = Math.min(32, Math.max(14, Math.round((width * height) / 46000)));
       nodes = Array.from({ length: nodeCount }, createPoint);
-      marks = languageMarks.map((label) => ({ ...createPoint(), label }));
     };
 
     const updatePointer = (event: PointerEvent) => {
       pointer.x = event.clientX;
       pointer.y = event.clientY;
-      document.documentElement.style.setProperty("--background-light-x", `${event.clientX}px`);
-      document.documentElement.style.setProperty("--background-light-y", `${event.clientY}px`);
+      pendingPointerX = event.clientX;
+      pendingPointerY = event.clientY;
+
+      if (!cssUpdateFrameId) {
+        cssUpdateFrameId = requestAnimationFrame(flushCssUpdates);
+      }
     };
 
     const updateParallax = () => {
-      document.documentElement.style.setProperty(
-        "--background-scroll-offset",
-        `${Math.min(window.scrollY * -0.025, 72)}px`,
-      );
+      pendingScroll = true;
+      isScrolling = true;
+      window.clearTimeout(scrollResumeTimer);
+      scrollResumeTimer = window.setTimeout(() => {
+        isScrolling = false;
+      }, 220);
+
+      if (!cssUpdateFrameId) {
+        cssUpdateFrameId = requestAnimationFrame(flushCssUpdates);
+      }
     };
 
     const draw = (time: number) => {
@@ -152,30 +130,6 @@ export function PortfolioBackground() {
         if (node.y < 0) node.y += 1;
       }
 
-      context.lineWidth = 1;
-      for (let firstIndex = 0; firstIndex < nodes.length; firstIndex += 1) {
-        const first = nodes[firstIndex];
-        const firstX = first.x * width;
-        const firstY = first.y * height;
-
-        for (let secondIndex = firstIndex + 1; secondIndex < nodes.length; secondIndex += 1) {
-          const second = nodes[secondIndex];
-          const secondX = second.x * width;
-          const secondY = second.y * height;
-          const distance = Math.hypot(secondX - firstX, secondY - firstY);
-          const maxDistance = 150 * ((first.depth + second.depth) / 2);
-
-          if (distance < maxDistance) {
-            const opacity = (1 - distance / maxDistance) * 0.14;
-            context.strokeStyle = `rgba(23, 28, 38, ${opacity})`;
-            context.beginPath();
-            context.moveTo(firstX, firstY);
-            context.lineTo(secondX, secondY);
-            context.stroke();
-          }
-        }
-      }
-
       for (const node of nodes) {
         const nodeX = node.x * width;
         const nodeY = node.y * height;
@@ -187,26 +141,16 @@ export function PortfolioBackground() {
         context.arc(nodeX, nodeY, radius, 0, Math.PI * 2);
         context.fill();
       }
-
-      context.font = '500 10px "Helvetica Neue", sans-serif';
-      context.textBaseline = "middle";
-      for (const mark of marks) {
-        mark.x = (mark.x + mark.driftX * delta * 0.5) % 1;
-        mark.y = (mark.y + mark.driftY * delta * 0.5) % 1;
-
-        if (mark.x < 0) mark.x += 1;
-        if (mark.y < 0) mark.y += 1;
-
-        const markX = mark.x * width;
-        const markY = mark.y * height;
-        const alpha = 0.12 + mark.depth * 0.12;
-        context.fillStyle = `rgba(23, 28, 38, ${alpha})`;
-        context.fillText(mark.label, markX, markY);
-      }
     };
 
+    let lastDrawTime = 0;
+    const frameInterval = 1000 / 30;
+
     const animate = (time: number) => {
-      draw(time);
+      if (!isScrolling && time - lastDrawTime >= frameInterval) {
+        lastDrawTime = time;
+        draw(time);
+      }
 
       if (!reducedMotionQuery.matches && isDocumentVisible) {
         frameId = requestAnimationFrame(animate);
@@ -247,6 +191,8 @@ export function PortfolioBackground() {
 
     return () => {
       cancelAnimationFrame(frameId);
+      cancelAnimationFrame(cssUpdateFrameId);
+      window.clearTimeout(scrollResumeTimer);
       window.removeEventListener("pointermove", updatePointer);
       window.removeEventListener("resize", resize);
       window.removeEventListener("scroll", updateParallax);

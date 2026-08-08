@@ -61,18 +61,14 @@ export function TechnologyJournal() {
         gsap.set(characters, { transformOrigin: "50% 100%", willChange: "filter, opacity, transform" });
 
         gsap.timeline({
+          onComplete: () => gsap.set(characters, { willChange: "auto" }),
+          onReverseComplete: () => gsap.set(characters, { willChange: "auto" }),
           scrollTrigger: { start: "top 71%", toggleActions: "play none none reverse", trigger: spread },
         })
           .from(logo, { autoAlpha: 0, duration: 1, ease: "power4.out", scale: 0.9 })
           .from(characters, { autoAlpha: 0, duration: 0.68, ease: "power4.out", filter: "blur(0.4rem)", stagger: 0.025, yPercent: 90 }, "-=0.62")
           .from(copy, { autoAlpha: 0, duration: 0.75, ease: "power3.out", y: 28 }, "-=0.34")
           .from(metadata, { autoAlpha: 0, duration: 0.62, ease: "power3.out", y: 14 }, "-=0.5");
-
-        gsap.to(fragment, {
-          ease: "none",
-          yPercent: -30,
-          scrollTrigger: { end: "bottom top", scrub: true, start: "top bottom", trigger: spread },
-        });
       });
     }, section);
 
@@ -84,7 +80,7 @@ export function TechnologyJournal() {
 
   return (
     <section aria-labelledby="technology-journal-title" className="technology-journal" data-editorial-section="skills" id="skills" ref={sectionRef}>
-      <header className="technology-journal__masthead">
+      <header className="technology-journal__masthead ds-container-wide">
         <p>Technology Journal / 03</p>
         <div>
           <p className="technology-journal__eyebrow">A field guide to the tools behind the work</p>
@@ -93,7 +89,7 @@ export function TechnologyJournal() {
         <p>21 selected instruments<br />Frontend / Backend / Tools</p>
       </header>
 
-      <div className="technology-journal__spreads">
+      <div className="technology-journal__spreads ds-container-wide">
         {technologies.map((technology, index) => (
           <article className="technology-journal__spread" key={technology.name}>
             <p aria-hidden="true" className="technology-journal__page">{String(index + 1).padStart(2, "0")}</p>

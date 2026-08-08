@@ -74,7 +74,7 @@ export function HomeHero() {
     const context = gsap.context(() => {
       if (!reduceMotion) {
         gsap.set(characters, { transformOrigin: "50% 100%", willChange: "filter, opacity, transform" });
-        gsap.timeline()
+        gsap.timeline({ onComplete: () => gsap.set(characters, { willChange: "auto" }) })
           .from(masthead, { autoAlpha: 0, duration: 0.8, ease: "power3.out", y: 14 })
           .from(eyebrow, { autoAlpha: 0, duration: 0.7, ease: "power3.out", y: 14 }, "-=0.48")
           .from(characters, { autoAlpha: 0, duration: 1.05, ease: "power4.out", filter: "blur(0.7rem)", stagger: 0.028, yPercent: 110 }, "-=0.3")
@@ -89,27 +89,6 @@ export function HomeHero() {
             repeat: -1,
             y: 6,
             yoyo: true,
-          });
-        }
-
-        gsap.to(hero, {
-          ease: "none",
-          scale: 0.97,
-          scrollTrigger: { end: "bottom top", scrub: true, start: "top top" },
-          transformOrigin: "center top",
-          yPercent: -2,
-        });
-        gsap.to(".home-hero__name", {
-          ease: "none",
-          scrollTrigger: { end: "bottom top", scrub: true, start: "top top" },
-          yPercent: -9,
-        });
-        const background = document.querySelector(".portfolio-background");
-        if (background) {
-          gsap.to(background, {
-            ease: "none",
-            scrollTrigger: { end: "bottom top", scrub: true, start: "top top" },
-            yPercent: -1.25,
           });
         }
       }
@@ -178,7 +157,7 @@ export function HomeHero() {
       </div>
       <section aria-labelledby="hero-name" className="home-hero" data-editorial-section="home" id="home" ref={heroRef}>
         <div className="home-hero__spotlight" />
-        <div className="home-hero__frame">
+        <div className="home-hero__frame ds-container-wide">
           <div className="home-hero__masthead" ref={mastheadRef}>
             <p className="home-hero__label">Portfolio / 2026</p>
             <p className="home-hero__issue">Issue No. 01</p>

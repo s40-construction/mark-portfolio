@@ -4,8 +4,6 @@
 }
 
 .interview-section__scene {
-  width: min(100% - (var(--ds-page-gutter) * 2), var(--ds-container-wide));
-  margin-inline: auto;
   will-change: filter, opacity, transform;
 }
 
@@ -117,7 +115,6 @@
 
 .interview-entry__question .char {
   display: inline-block;
-  will-change: filter, opacity, transform;
 }
 
 .interview-entry__question .word {

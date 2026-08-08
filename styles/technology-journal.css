@@ -6,9 +6,7 @@
 .technology-journal__masthead {
   display: grid;
   gap: var(--ds-space-10);
-  width: min(100% - (var(--ds-page-gutter) * 2), var(--ds-container-wide));
   min-height: min(42rem, 82svh);
-  margin-inline: auto;
   padding-block: var(--ds-space-32) var(--ds-space-16);
   border-bottom: 1px solid var(--ds-color-line-strong);
   color: var(--ds-color-muted);
@@ -41,11 +39,6 @@
   font-weight: 400;
   line-height: 0.84;
   text-transform: none;
-}
-
-.technology-journal__spreads {
-  width: min(100% - (var(--ds-page-gutter) * 2), var(--ds-container-wide));
-  margin-inline: auto;
 }
 
 .technology-journal__spread {
@@ -98,7 +91,6 @@
   opacity: 0.05;
   text-transform: none;
   white-space: nowrap;
-  will-change: transform;
 }
 
 .technology-journal__logo {
@@ -116,7 +108,6 @@
   line-height: 1;
   cursor: default;
   transition: border-color var(--ds-duration-base) var(--ds-ease-editorial), background-color var(--ds-duration-base) var(--ds-ease-editorial), box-shadow var(--ds-duration-base) var(--ds-ease-editorial);
-  will-change: opacity;
 }
 
 .technology-journal__logo:hover {
@@ -141,7 +132,6 @@
   display: grid;
   gap: var(--ds-space-5);
   padding-inline: var(--ds-space-4);
-  will-change: opacity, transform;
 }
 
 .technology-journal__name {

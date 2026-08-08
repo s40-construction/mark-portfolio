@@ -2,16 +2,19 @@
   .ds-container,
   .ds-container-reading,
   .ds-container-wide {
-    width: min(100% - (var(--ds-page-gutter) * 2), var(--ds-container-content));
     margin-inline: auto;
   }
 
+  .ds-container {
+    width: min(100% - (var(--ds-page-gutter) * 2), var(--ds-container-content));
+  }
+
   .ds-container-reading {
-    max-width: var(--ds-container-reading);
+    width: min(100% - (var(--ds-page-gutter) * 2), var(--ds-container-reading));
   }
 
   .ds-container-wide {
-    max-width: var(--ds-container-wide);
+    width: min(100% - (var(--ds-page-gutter) * 2), var(--ds-container-wide));
   }
 
   .ds-grid {

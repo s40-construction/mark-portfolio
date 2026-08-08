@@ -1,6 +1,5 @@
 "use client";
 
-import Lenis from "lenis";
 import { useEffect, type PropsWithChildren } from "react";
 
 import { ScrollTrigger } from "@/animations/gsap";
@@ -14,20 +13,11 @@ export function SmoothScrollProvider({ children }: PropsWithChildren) {
     }
     window.scrollTo({ behavior: "auto", top: 0 });
 
-    const simplifiedScrolling = window.matchMedia("(pointer: coarse), (prefers-reduced-motion: reduce)");
-
-    if (simplifiedScrolling.matches) {
-      return () => {
-        window.history.scrollRestoration = previousScrollRestoration;
-      };
-    }
-
-    const lenis = new Lenis({ autoRaf: false });
-    lenis.scrollTo(0, { immediate: true });
-    let frameId = 0;
-    let previousScroll = 0;
-    const updateScrollTrigger = ({ scroll }: { scroll: number }) => {
-      ScrollTrigger.update();
+    // Native scroll instead of JS-virtualized smooth scroll: the browser's own compositor-driven
+    // scrolling is far less prone to FPS drops than any JS smoothing layer running every frame.
+    let previousScroll = window.scrollY;
+    const onScroll = () => {
+      const scroll = window.scrollY;
       const isScrollingDown = scroll > previousScroll + 4;
       const isScrollingUp = scroll < previousScroll - 4;
 
@@ -40,19 +30,11 @@ export function SmoothScrollProvider({ children }: PropsWithChildren) {
       previousScroll = scroll;
     };
 
-    const onAnimationFrame = (time: number) => {
-      lenis.raf(time);
-      frameId = requestAnimationFrame(onAnimationFrame);
-    };
-
-    lenis.on("scroll", updateScrollTrigger);
-    frameId = requestAnimationFrame(onAnimationFrame);
+    window.addEventListener("scroll", onScroll, { passive: true });
     ScrollTrigger.refresh();
 
     return () => {
-      cancelAnimationFrame(frameId);
-      lenis.off("scroll", updateScrollTrigger);
-      lenis.destroy();
+      window.removeEventListener("scroll", onScroll);
       document.documentElement.classList.remove("is-scrolling-down");
       window.history.scrollRestoration = previousScrollRestoration;
     };

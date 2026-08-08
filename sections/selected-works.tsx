@@ -55,6 +55,8 @@ export function SelectedWorks() {
           duration: 0.75,
           ease: "power4.out",
           filter: "blur(0.45rem)",
+          onComplete: () => gsap.set(characters, { willChange: "auto" }),
+          onReverseComplete: () => gsap.set(characters, { willChange: "auto" }),
           stagger: 0.02,
           yPercent: 90,
           scrollTrigger: { start: "top 78%", toggleActions: "play none none reverse", trigger: chapterTitle },
@@ -73,17 +75,14 @@ export function SelectedWorks() {
         const characters = split.chars ?? [];
         splits.push(split);
         gsap.set(characters, { transformOrigin: "50% 100%", willChange: "filter, opacity, transform" });
-        gsap.timeline({ scrollTrigger: { start: "top 74%", toggleActions: "play none none reverse", trigger: project } })
+        gsap.timeline({
+          onComplete: () => gsap.set(characters, { willChange: "auto" }),
+          onReverseComplete: () => gsap.set(characters, { willChange: "auto" }),
+          scrollTrigger: { start: "top 74%", toggleActions: "play none none reverse", trigger: project },
+        })
           .from(visual, { autoAlpha: 0, duration: 1.05, ease: "power4.out", clipPath: "inset(8% 8% 8% 8%)", scale: 0.94 })
           .from(characters, { autoAlpha: 0, duration: 0.7, ease: "power4.out", filter: "blur(0.4rem)", stagger: 0.018, yPercent: 85 }, "-=0.72")
           .from(content.querySelectorAll(".case-study__summary, .case-study__facts, .case-study__chapter"), { autoAlpha: 0, duration: 0.6, ease: "power3.out", stagger: 0.08, y: 18 }, "-=0.35");
-
-        gsap.to(visual, {
-          ease: "none",
-          scale: 1.035,
-          yPercent: -4,
-          scrollTrigger: { end: "bottom top", scrub: true, start: "top bottom", trigger: project },
-        });
       });
     }, section);
 
@@ -95,7 +94,7 @@ export function SelectedWorks() {
 
   return (
     <section aria-labelledby="selected-works-title" className="selected-works" data-editorial-section="projects" id="projects" ref={sectionRef}>
-      <header className="selected-works__header">
+      <header className="selected-works__header ds-container-wide">
         <p>Issue 06 / Case studies</p>
         <div>
           <p className="selected-works__eyebrow">A record of applied thinking</p>
@@ -105,8 +104,8 @@ export function SelectedWorks() {
         <p>Four case studies<br />2023 - 2026</p>
       </header>
 
-      <div className="selected-works__projects">
-        {projects.map((project, index) => (
+      <div className="selected-works__projects ds-container-wide">
+        {projects.map((project) => (
           <article className={`case-study case-study--${project.visual}`} key={project.number}>
             <p aria-hidden="true" className="case-study__number">{project.number}</p>
             <div className="case-study__visual" data-editorial-parallax>
@@ -127,7 +126,6 @@ export function SelectedWorks() {
                 <div><dt>Stack</dt><dd>{project.stack}</dd></div>
               </dl>
             </div>
-            <div className="case-study__next"><span>Next Case Study</span><strong>{index === projects.length - 1 ? "Contact" : projects[index + 1].name}</strong><i aria-hidden="true">↓</i></div>
           </article>
         ))}
       </div>

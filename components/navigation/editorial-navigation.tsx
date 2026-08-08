@@ -1,8 +1,8 @@
 "use client";
 
-import { ArrowUpRight, Menu, X } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useLayoutEffect, useEffect, useRef } from "react";
 
 import { gsap, ScrollTrigger } from "@/animations/gsap";
 import { useReducedMotion } from "@/animations/motion";
@@ -10,14 +10,20 @@ import "@/styles/navigation.css";
 
 const navigationItems = ["Home", "About", "Skills", "Projects", "Experience", "Contact"] as const;
 
+const routes: Record<(typeof navigationItems)[number], string> = {
+  About: "/about",
+  Contact: "/contact",
+  Experience: "/experience",
+  Home: "/",
+  Projects: "/projects",
+  Skills: "/skills",
+};
+
 export function EditorialNavigation() {
   const navigationRef = useRef<HTMLElement>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
-  const menuButtonRef = useRef<HTMLButtonElement>(null);
-  const menuLinksRef = useRef<HTMLAnchorElement[]>([]);
-  const [activeItem, setActiveItem] = useState<(typeof navigationItems)[number]>("Home");
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const reduceMotion = useReducedMotion();
+  const pathname = usePathname();
+  const displayedActiveItem = navigationItems.find((item) => routes[item] === pathname) ?? "Home";
 
   useLayoutEffect(() => {
     const navigation = navigationRef.current;
@@ -65,11 +71,6 @@ export function EditorialNavigation() {
         start: 0,
       });
       updateScrolledState(scrollTrigger.scroll());
-      const onScroll = () => updateScrolledState(window.scrollY);
-      window.addEventListener("scroll", onScroll, { passive: true });
-      cleanupListeners.push(() => {
-        window.removeEventListener("scroll", onScroll);
-      });
 
       navigation.querySelectorAll<HTMLElement>(".editorial-nav__link").forEach((link) => {
         const indicator = link.querySelector(".editorial-nav__indicator");
@@ -139,75 +140,6 @@ export function EditorialNavigation() {
   }, []);
 
   useEffect(() => {
-    const menu = menuRef.current;
-
-    if (!menu) {
-      return;
-    }
-
-    const links = menuLinksRef.current;
-    const timeline = gsap.timeline({ defaults: { ease: "power4.inOut" } });
-
-    if (isMenuOpen) {
-      document.body.style.overflow = "hidden";
-      timeline
-        .set(menu, { autoAlpha: 1, pointerEvents: "auto" })
-        .fromTo(menu, { clipPath: "circle(0% at calc(100% - 2.5rem) 2.5rem)" }, { clipPath: "circle(150% at calc(100% - 2.5rem) 2.5rem)", duration: reduceMotion ? 0 : 0.8 })
-        .fromTo(".editorial-menu__close", { autoAlpha: 0, rotate: -90 }, { autoAlpha: 1, duration: reduceMotion ? 0 : 0.45, rotate: 0 }, "-=0.35")
-        .fromTo(links, { autoAlpha: 0, x: 32 }, { autoAlpha: 1, duration: reduceMotion ? 0 : 0.65, stagger: reduceMotion ? 0 : 0.075, x: 0 }, "-=0.35")
-        .fromTo(".editorial-menu__metadata", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, duration: reduceMotion ? 0 : 0.55, y: 0 }, "-=0.25")
-        .call(() => links[0]?.focus());
-    } else {
-      timeline
-        .to(links, { autoAlpha: 0, duration: reduceMotion ? 0 : 0.25, stagger: reduceMotion ? 0 : 0.03, x: 20 })
-        .to(menu, { autoAlpha: 0, clipPath: "circle(0% at calc(100% - 2.5rem) 2.5rem)", duration: reduceMotion ? 0 : 0.6, pointerEvents: "none" }, "-=0.08");
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      timeline.kill();
-      document.body.style.overflow = "";
-    };
-  }, [isMenuOpen, reduceMotion]);
-
-  useEffect(() => {
-    if (!isMenuOpen) {
-      return;
-    }
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setIsMenuOpen(false);
-        menuButtonRef.current?.focus();
-        return;
-      }
-
-      if (event.key !== "Tab") {
-        return;
-      }
-
-      const links = menuLinksRef.current;
-      const first = links[0];
-      const last = links.at(-1);
-
-      if (!first || !last) {
-        return;
-      }
-
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [isMenuOpen]);
-
-  useEffect(() => {
     const navigation = navigationRef.current;
 
     if (!navigation) {
@@ -224,99 +156,36 @@ export function EditorialNavigation() {
         scaleX: isActive ? 1 : 0,
       });
     });
-  }, [activeItem, reduceMotion]);
+  }, [displayedActiveItem, reduceMotion]);
 
-  const getHref = (item: (typeof navigationItems)[number]) => {
-    if (item === "Home") {
-      return "/";
-    }
+  const getHref = (item: (typeof navigationItems)[number]) => routes[item];
 
-    return item === "Experience" ? "#process" : `#${item.toLowerCase()}`;
-  };
-
-  const selectItem = (item: (typeof navigationItems)[number]) => {
-    const href = getHref(item);
-    setActiveItem(item);
-    setIsMenuOpen(false);
+  const handleNavClick = (item: (typeof navigationItems)[number], event: React.MouseEvent) => {
     document.documentElement.classList.remove("is-scrolling-down");
 
-    if (item === "Home") {
-      window.history.pushState(null, "", window.location.pathname);
+    if (item === "Home" && pathname === "/") {
+      event.preventDefault();
       window.scrollTo({ behavior: reduceMotion ? "auto" : "smooth", top: 0 });
-      return;
     }
-
-    window.history.pushState(null, "", href);
-    document.querySelector(href)?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
   };
 
   return (
     <nav aria-label="Primary navigation" className="editorial-nav" ref={navigationRef}>
-      <div className="editorial-nav__shell">
+      <div className="editorial-nav__shell ds-container-wide">
         <Link aria-label="Mark Keneth Bonquin home" className="editorial-nav__monogram" href="/">MK</Link>
         <div className="editorial-nav__links">
           {navigationItems.map((item) => (
             <Link
-              aria-current={activeItem === item ? "page" : undefined}
+              aria-current={displayedActiveItem === item ? "page" : undefined}
               className="editorial-nav__link"
               href={getHref(item)}
               key={item}
-              onClick={(event) => {
-                event.preventDefault();
-                selectItem(item);
-              }}
+              onClick={(event) => handleNavClick(item, event)}
             >
               {item}
               <span aria-hidden="true" className="editorial-nav__indicator" />
             </Link>
           ))}
-        </div>
-        <button
-          aria-controls="editorial-menu"
-          aria-expanded={isMenuOpen}
-          aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-          className="editorial-nav__toggle"
-          onClick={() => setIsMenuOpen((isOpen) => !isOpen)}
-          ref={menuButtonRef}
-          type="button"
-        >
-          {isMenuOpen ? <X aria-hidden="true" size={19} strokeWidth={1.6} /> : <Menu aria-hidden="true" size={20} strokeWidth={1.6} />}
-        </button>
-      </div>
-
-      <div aria-hidden={!isMenuOpen} className="editorial-menu" id="editorial-menu" ref={menuRef}>
-        <button aria-label="Close navigation menu" className="editorial-menu__close" onClick={() => setIsMenuOpen(false)} type="button">
-          <X aria-hidden="true" size={22} strokeWidth={1.5} />
-        </button>
-        <div className="editorial-menu__content">
-          <div className="editorial-menu__links">
-            {navigationItems.map((item, index) => (
-              <Link
-                className="editorial-menu__link"
-                href={getHref(item)}
-                key={item}
-                onClick={(event) => {
-                  event.preventDefault();
-                  selectItem(item);
-                }}
-                ref={(element) => {
-                  if (element) {
-                    menuLinksRef.current[index] = element;
-                  }
-                }}
-              >
-                <span>{item}</span>
-                <ArrowUpRight aria-hidden="true" size={22} strokeWidth={1.25} />
-              </Link>
-            ))}
-          </div>
-          <div className="editorial-menu__metadata">
-            <p>Portfolio / 2026</p>
-            <p>Issue No. 01</p>
-            <p>Current time / {new Intl.DateTimeFormat("en-PH", { hour: "2-digit", minute: "2-digit" }).format(new Date())}</p>
-            <p>Cainta, Rizal</p>
-            <p>Open for Opportunities</p>
-          </div>
         </div>
       </div>
     </nav>

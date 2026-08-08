@@ -80,6 +80,8 @@ export function InterviewSection() {
 
         gsap.set(characters, { transformOrigin: "50% 100%", willChange: "filter, opacity, transform" });
         const reveal = gsap.timeline({
+          onComplete: () => gsap.set(characters, { willChange: "auto" }),
+          onReverseComplete: () => gsap.set(characters, { willChange: "auto" }),
           scrollTrigger: {
             start: "top 78%",
             toggleActions: "play none none reverse",
@@ -90,15 +92,6 @@ export function InterviewSection() {
           .from(characters, { autoAlpha: 0, duration: 0.72, ease: "power4.out", filter: "blur(0.45rem)", stagger: 0.018, yPercent: 70 })
           .from(answer, { autoAlpha: 0, duration: 0.72, ease: "power3.out", filter: "blur(0.2rem)", y: 18 }, "-=0.4");
       });
-
-      const image = section.querySelector(".interview-section__image");
-      if (image) {
-        gsap.fromTo(image, { scale: 1.1 }, {
-          ease: "none",
-          scale: 1,
-          scrollTrigger: { end: "bottom top", scrub: true, start: "top bottom", trigger: image },
-        });
-      }
 
       gsap.from(".interview-section__timeline", {
         autoAlpha: 0,
@@ -124,7 +117,7 @@ export function InterviewSection() {
 
   return (
     <section aria-labelledby="interview-title" className="interview-section" data-editorial-section="about" id="about" ref={sectionRef}>
-      <div className="interview-section__scene">
+      <div className="interview-section__scene ds-container-wide">
         <header className="interview-section__header">
           <div className="interview-section__metadata">
             <p>Feature article / 02</p>

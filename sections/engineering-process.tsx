@@ -81,7 +81,11 @@ export function EngineeringProcess() {
     const characters = split.chars ?? [];
     const context = gsap.context(() => {
       gsap.set(characters, { transformOrigin: "50% 100%", willChange: "filter, opacity, transform" });
-      gsap.timeline({ scrollTrigger: { start: "top 74%", toggleActions: "play none none reverse", trigger: section } })
+      gsap.timeline({
+        onComplete: () => gsap.set(characters, { willChange: "auto" }),
+        onReverseComplete: () => gsap.set(characters, { willChange: "auto" }),
+        scrollTrigger: { start: "top 74%", toggleActions: "play none none reverse", trigger: section },
+      })
         .from(".engineering-process__eyebrow, .engineering-process__index", { autoAlpha: 0, duration: 0.55, ease: "power3.out", stagger: 0.08, y: 12 })
         .from(characters, { autoAlpha: 0, duration: 0.75, ease: "power4.out", filter: "blur(0.45rem)", stagger: 0.02, yPercent: 90 }, "-=0.25")
         .from(".engineering-process__subtitle, .engineering-process__method", { autoAlpha: 0, duration: 0.65, ease: "power3.out", stagger: 0.08, y: 16 }, "-=0.38");
@@ -98,18 +102,9 @@ export function EngineeringProcess() {
 
       section.querySelectorAll<HTMLElement>(".process-stage").forEach((stage, index) => {
         const icon = stage.querySelector<HTMLElement>(".process-stage__icon");
-        const visual = stage.querySelector<HTMLElement>(".process-stage__visual");
         gsap.timeline({ scrollTrigger: { start: "top 82%", toggleActions: "play none none reverse", trigger: stage } })
           .from(stage, { autoAlpha: 0, duration: 0.65, ease: "power3.out", y: 24 })
           .from(icon, { duration: 0.72, ease: "back.out(1.8)", rotate: index % 2 === 0 ? -14 : 14, scale: 0.76 }, "-=0.44");
-
-        if (visual) {
-          gsap.to(visual, {
-            ease: "none",
-            yPercent: -10,
-            scrollTrigger: { end: "bottom top", scrub: true, start: "top bottom", trigger: stage },
-          });
-        }
       });
     }, section);
 
@@ -121,7 +116,7 @@ export function EngineeringProcess() {
 
   return (
     <section aria-labelledby="engineering-process-title" className="engineering-process" data-editorial-section="experience" id="process" ref={sectionRef}>
-      <div className="engineering-process__inner" data-editorial-scene>
+      <div className="engineering-process__inner ds-container-wide" data-editorial-scene>
         <header className="engineering-process__header">
           <p className="engineering-process__eyebrow">Issue 05 / Methodology</p>
           <div>
@@ -163,7 +158,6 @@ export function EngineeringProcess() {
           </div>
         </div>
       </div>
-      <div className="engineering-process__next"><span>Next chapter</span><strong>Contact</strong><i aria-hidden="true">↓</i></div>
     </section>
   );
 }

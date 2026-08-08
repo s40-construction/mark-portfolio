@@ -65,17 +65,15 @@ export function DeveloperWorkspace() {
     const characters = split.chars ?? [];
     const context = gsap.context(() => {
       gsap.set(characters, { transformOrigin: "50% 100%", willChange: "filter, opacity, transform" });
-      gsap.timeline({ scrollTrigger: { start: "top 74%", toggleActions: "play none none reverse", trigger: section } })
+      gsap.timeline({
+        onComplete: () => gsap.set(characters, { willChange: "auto" }),
+        onReverseComplete: () => gsap.set(characters, { willChange: "auto" }),
+        scrollTrigger: { start: "top 74%", toggleActions: "play none none reverse", trigger: section },
+      })
         .from(".developer-workspace__eyebrow", { autoAlpha: 0, duration: 0.55, ease: "power3.out", y: 14 })
         .from(characters, { autoAlpha: 0, duration: 0.75, ease: "power4.out", filter: "blur(0.45rem)", stagger: 0.022, yPercent: 90 }, "-=0.25")
         .from(".developer-workspace__lede, .developer-workspace__actions, .developer-workspace__facts", { autoAlpha: 0, duration: 0.65, ease: "power3.out", stagger: 0.1, y: 18 }, "-=0.4")
         .from(".workspace-machine", { autoAlpha: 0, duration: 1, ease: "power4.out", scale: 0.96, y: 32 }, "-=0.75");
-
-      gsap.to(".workspace-machine", {
-        ease: "none",
-        yPercent: -3,
-        scrollTrigger: { end: "bottom top", scrub: true, start: "top bottom", trigger: section },
-      });
     }, section);
 
     return () => {
@@ -108,7 +106,7 @@ export function DeveloperWorkspace() {
 
   return (
     <section aria-labelledby="workspace-title" className="developer-workspace" data-editorial-section="skills" id="workspace" ref={sectionRef}>
-      <div className="developer-workspace__inner" data-editorial-scene>
+      <div className="developer-workspace__inner ds-container-wide" data-editorial-scene>
         <div className="developer-workspace__copy">
           <p className="developer-workspace__eyebrow">Issue 04 / Working edition</p>
           <h2 className="developer-workspace__title" id="workspace-title">My<br />Workspace</h2>
@@ -167,7 +165,6 @@ export function DeveloperWorkspace() {
           <div aria-hidden="true" className="workspace-machine__base"><i /></div>
         </div>
       </div>
-      <div className="developer-workspace__next"><span>Next chapter</span><strong>Projects</strong><i aria-hidden="true">↓</i></div>
     </section>
   );
 }

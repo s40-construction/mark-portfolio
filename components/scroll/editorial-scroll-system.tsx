@@ -1,6 +1,7 @@
 "use client";
 
 import SplitType from "split-type";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { gsap, ScrollTrigger } from "@/animations/gsap";
@@ -14,6 +15,7 @@ export function EditorialScrollSystem() {
   const progressRef = useRef<HTMLSpanElement>(null);
   const [activeSection, setActiveSection] = useState<(typeof sectionLabels)[number]>("Home");
   const reduceMotion = useReducedMotion();
+  const pathname = usePathname();
 
   useEffect(() => {
     const progress = progressRef.current;
@@ -51,11 +53,12 @@ export function EditorialScrollSystem() {
 
         const scene = section.querySelector<HTMLElement>("[data-editorial-scene]");
         if (scene && !simplifyEffects) {
-          gsap.fromTo(scene, { autoAlpha: 0.35, scale: 0.985 }, {
-            autoAlpha: 1,
-            ease: "none",
-            scale: 1,
-            scrollTrigger: { end: "center center", scrub: true, start: "top bottom", trigger: section },
+          gsap.from(scene, {
+            autoAlpha: 0.35,
+            duration: 0.6,
+            ease: "power2.out",
+            scale: 0.985,
+            scrollTrigger: { start: "top 82%", toggleActions: "play none none reverse", trigger: section },
           });
         }
 
@@ -69,21 +72,13 @@ export function EditorialScrollSystem() {
             autoAlpha: 0,
             ease: "power4.out",
             filter: "blur(0.55rem)",
+            onComplete: () => gsap.set(characters, { willChange: "auto" }),
+            onReverseComplete: () => gsap.set(characters, { willChange: "auto" }),
             stagger: 0.025,
             yPercent: 85,
             scrollTrigger: { end: "top 44%", start: "top 82%", toggleActions: "play none none reverse", trigger: title },
           });
         }
-
-        section.querySelectorAll<HTMLElement>("[data-editorial-parallax]").forEach((element) => {
-          if (!simplifyEffects) {
-            gsap.to(element, {
-              ease: "none",
-              yPercent: -8,
-              scrollTrigger: { end: "bottom top", scrub: true, start: "top bottom", trigger: section },
-            });
-          }
-        });
       });
     });
 
@@ -91,7 +86,7 @@ export function EditorialScrollSystem() {
       context.revert();
       splits.forEach((split) => split.revert());
     };
-  }, [reduceMotion]);
+  }, [pathname, reduceMotion]);
 
   useEffect(() => {
     const system = systemRef.current;

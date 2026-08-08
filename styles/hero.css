@@ -70,9 +70,7 @@
 
 .home-hero__frame {
   display: grid;
-  width: min(100% - (var(--ds-page-gutter) * 2), var(--ds-container-wide));
   min-height: 100svh;
-  margin-inline: auto;
   padding-block: var(--ds-space-6) var(--ds-space-5);
   grid-template-rows: auto 1fr auto;
 }
@@ -129,7 +127,6 @@
 
 .home-hero__name-line .char {
   display: inline-block;
-  will-change: filter, opacity, transform;
 }
 
 .home-hero__name-line--offset {
